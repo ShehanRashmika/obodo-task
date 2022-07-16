@@ -14,9 +14,10 @@ class AddInfomrationPage extends StatefulWidget {
 
 class _AddInfomrationPageState extends State<AddInfomrationPage> {
   void submit() async {
-    Provider.of<InformationProvider>(context, listen: false).submit();
-
-    SnackBarDialog.showSnackBar(context, "Form added successfully!");
+    Provider.of<InformationProvider>(context, listen: false).submit(() {
+      SnackBarDialog.showSnackBar(context, "Form added successfully!");
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -25,10 +26,13 @@ class _AddInfomrationPageState extends State<AddInfomrationPage> {
       appBar: AppBar(
         title: const Text("Add Information"),
       ),
-      bottomNavigationBar: Container(
+      bottomSheet: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: MainButton(label: "Submit", icon: Icons.send, onClick: submit),
+        child: Container(
+            height: 45,
+            child: MainButton(
+                label: "Submit Form", icon: Icons.send, onClick: submit)),
       ),
       body: SingleChildScrollView(
           child: Consumer<InformationProvider>(builder: (ctx, provider, child) {
@@ -39,10 +43,12 @@ class _AddInfomrationPageState extends State<AddInfomrationPage> {
           );
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 60),
           child: ListView.builder(
               itemCount: provider.informationItems.length,
               shrinkWrap: true,
+              primary: false,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),

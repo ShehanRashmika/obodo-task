@@ -11,6 +11,8 @@ class AllFormsPage extends StatefulWidget {
 }
 
 class _AllFormsPageState extends State<AllFormsPage> {
+  bool isLoading = false;
+
   @override
   void initState() {
     getForms();
@@ -18,7 +20,13 @@ class _AllFormsPageState extends State<AllFormsPage> {
   }
 
   void getForms() async {
+    setState(() {
+      isLoading = true;
+    });
     await Provider.of<InformationProvider>(context, listen: false).fetchForms();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> onRefresh() async {
@@ -31,34 +39,46 @@ class _AllFormsPageState extends State<AllFormsPage> {
       appBar: AppBar(
         title: const Text("Forms"),
       ),
-      body: RefreshIndicator(
-        onRefresh: onRefresh,
-        child: Consumer<InformationProvider>(
-          builder: (ctx, provider, child) {
-            return ListView.builder(
-                itemCount: provider.forms.length,
-                itemBuilder: (ctx, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount:
-                              provider.forms[index].informationItems.length,
-                          itemBuilder: (ctx, index2) {
-                            return FormItemCard(
-                                label: provider.forms[index]
-                                    .informationItems[index2].label,
-                                data: provider.forms[index]
-                                    .informationItems[index2].data);
-                          }),
-                    ),
-                  );
-                });
-          },
-        ),
-      ),
+      body: isLoading
+          ? const Center(
+              child: const Text("Loading..."),
+            )
+          : RefreshIndicator(
+              onRefresh: onRefresh,
+              child: Consumer<InformationProvider>(
+                builder: (ctx, provider, child) {
+                  return ListView.builder(
+                      itemCount: provider.forms.length,
+                      itemBuilder: (ctx, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            child: ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: provider
+                                    .forms[index].informationItems.length,
+                                itemBuilder: (ctx, index2) {
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      FormItemCard(
+                                          label: provider.forms[index]
+                                              .informationItems[index2].label,
+                                          data: provider.forms[index]
+                                              .informationItems[index2].data),
+                                      const Divider(),
+                                    ],
+                                  );
+                                }),
+                          ),
+                        );
+                      });
+                },
+              ),
+            ),
     );
   }
 }

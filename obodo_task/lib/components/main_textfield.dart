@@ -11,6 +11,7 @@ class MainTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
+        label: Text(hint),
         border: OutlineInputBorder(),
         hintText: hint,
       ),

@@ -14,12 +14,10 @@ class FormItemCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,
+          Text("$label : ",
               style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-          Text(
-            data,
-          ),
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(data, style: const TextStyle(fontSize: 14)),
         ],
       ),
     );

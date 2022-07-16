@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:obodo_task/views/add_fields_page.dart';
 import 'package:obodo_task/views/add_info_page.dart';
 import 'package:obodo_task/views/all_forms_page.dart';
+import 'package:provider/provider.dart';
 
 import '../components/main_button.dart';
+import '../providers/information_provider.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home-page";
@@ -13,6 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    Provider.of<InformationProvider>(context, listen: false).getFromLocal();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +57,17 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.add,
                 onClick: () {
                   Navigator.pushNamed(context, AddInfomrationPage.routeName);
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: double.infinity,
+              child: MainButton(
+                label: "View Forms",
+                icon: Icons.format_align_center,
+                onClick: () {
+                  Navigator.pushNamed(context, AllFormsPage.routeName);
                 },
               ),
             ),
