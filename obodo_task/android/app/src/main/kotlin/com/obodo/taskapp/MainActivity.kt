@@ -1,4 +1,4 @@
-package com.obodo.obodo_task
+package com.obodo.taskapp
 
 import io.flutter.embedding.android.FlutterActivity
 
